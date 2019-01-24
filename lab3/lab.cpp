@@ -5,10 +5,10 @@
 #include <cstdio>
 #include <gmp.h>
 int main(int argc, char *argv[]){
-    long long p = 5; //простое
+    long long p = 31; //простое
     long long q = 5; //простое
     long long X = 112; //факторизуемое
-    long long g = 7;
+    long long g = 3;
     long long x = 2;
     int m = 1;
 
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
 
     long long k = (r + x*b) % q;
     std::cout << "k: " << k << std::endl;
-    long long g_k = (long long) pow(g, k);
+    long long g_k = (long long) pow(g, k) % p;
     long long X_b_h = ((long long ) pow(X, b) * h) % p;
     while (m > 0){
         if (g_k == X_b_h) {

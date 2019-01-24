@@ -1,3 +1,4 @@
+//http://www.cryptoprotocols.kz/index.php?view=examples&id=20
 #include <cstdlib>
 #include <iostream>
 #include <ctime>

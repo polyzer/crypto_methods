@@ -85,7 +85,7 @@ R = (alpha**k) % n
 #-power:
 power = ((H % n)*(S**k) % n) + k
 print("power: %i" %power)
-TR_left = S**k
+TR_left = S**k % n
 
 TR_right = alpha ** power % n
 

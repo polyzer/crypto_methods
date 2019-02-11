@@ -1,0 +1,3 @@
+pub.publish("a nice channel", "I am sending a message.");
+pub.publish("a nice channel", "I am sending a second message.");
+pub.publish("a nice channel", "I am sending my last message.");

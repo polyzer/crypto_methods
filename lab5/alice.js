@@ -1,8 +1,5 @@
 var crypto = require('crypto');
 
-let redis = require("redis");
-let sub = redis.createClient();
-let pub = redis.createClient();
 let promises = [];
 
 /**  1. First Step
@@ -16,16 +13,20 @@ let promises = [];
 let prime_length = 60;
 let diffHell = crypto.createDiffieHellman(prime_length);
 diffHell.generateKeys('base64');
-// Getting random session key, that would be used for chatting with Bob.
-let random_session_key_for_bob = diffHell.getPrivateKey();
-// Shared key for Trent
-let Alice_Trent_cypher_key = 'Alice_Trent_cypher_key'; //Alice and Trent knows
-// Getting timestamp
-let time_stamp = new Date().getSeconds();
-// Getting Bob_id
-let Bob_id = 'Bob_id';
+let First_session_info = {
+    random_session_key_for_bob: diffHell.getPrivateKey(),
+    // Shared key for Trent
+    Alice_Trent_cypher_key: 'Alice_Trent_cypher_key',
+    // Getting timestamp
+    time_stamp: new Date().getSeconds(),
+    Bob_id:'Bob_id'
+};
 diffHell.setPrivateKey(Alice_Trent_cypher_key);
-
+// Buffer that we need to encrypt with  key;
+let first_session_data = First_session_info.time_stamp + 
+First_session_info.Bob_id + First_session_info.random_session_key_for_bob;
+// Ecnrypting
+let encrypted_buffer = crypto.privateEncrypt(First_session_info.Alice_Trent_cypher_key, first_session_data);
 
 process.on("message", (msg)=>{
     console.log("Child: %s", JSON.stringify(msg));
@@ -39,5 +40,5 @@ process.on("message", (msg)=>{
     });
 });
 process.on('exit',()=>{
-    console.log("Child: exited ;)");
+    console.log("Alice: exited ;)");
 });

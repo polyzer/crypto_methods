@@ -2,8 +2,8 @@ const crypto = require('crypto');
 
 const redis = require("redis");
 const { fork } = require('child_process');
-const childprocess = fork('alice.js');
-const childprocess = fork('bob.js');
+const alice_child_process = fork('alice.js');
+const bob_child_process = fork('bob.js');
 
 // DATA
 let Alice_Trent_cypher_key = 'Alice_Trent_cypher_key'; //Alice and Trent knows

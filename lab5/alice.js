@@ -13,24 +13,25 @@ let promises = [];
 let prime_length = 60;
 let diffHell = crypto.createDiffieHellman(prime_length);
 diffHell.generateKeys('base64');
+/////////////////////////************ */
 let First_session_info = {
-    random_session_key_for_bob: diffHell.getPrivateKey(),
+    randomSessionKeyForBob: diffHell.getPrivateKey(),
     // Shared key for Trent
-    Alice_Trent_cypher_key: 'Alice_Trent_cypher_key',
+    AliceTrentCypherKey: 'Alice_Trent_cypher_key',
     // Getting timestamp
-    time_stamp: new Date().getSeconds(),
-    Bob_id:'Bob_id'
+    timeStamp: new Date().getSeconds(),
+    BobID:'Bob_id'
 };
-diffHell.setPrivateKey(Alice_Trent_cypher_key);
+/////////////////////////************ */
 // Buffer that we need to encrypt with  key;
-let first_session_data = First_session_info.time_stamp + 
-First_session_info.Bob_id + First_session_info.random_session_key_for_bob;
+let first_session_data = First_session_info.timeStamp + 
+First_session_info.BobID + First_session_info.randomSessionKeyForBob;
 // Ecnrypting
-let encrypted_buffer = crypto.privateEncrypt(First_session_info.Alice_Trent_cypher_key, first_session_data);
+let encrypted_buffer = crypto.privateEncrypt(First_session_info.AliceTrentCypherKey, first_session_data);
 
 process.on("message", (msg)=>{
-    console.log("Child: %s", JSON.stringify(msg));
-    console.log('Child: promises %s', JSON.stringify(promises));
+    console.log("Alice: %s", JSON.stringify(msg));
+    console.log('Alice: promises %s', JSON.stringify(promises));
     Promise.all(promises).then(()=>{
         if(msg.end === true){
             sub.quit();

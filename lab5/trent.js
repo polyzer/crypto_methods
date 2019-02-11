@@ -16,9 +16,3 @@ let Bob_Trent_cypher_key = 'Bob_Trent_cypher_key'; //Alice and Trent knows
  * конкатенацию из новой метки времени, идентификатора Алисы и сеансового ключа, 
  * после чего шифрует её общим с Бобом ключом и передаёт ему.
  */
-
-
-// lineReader.on("line", function (line){
-//     console.log("Parent process publish: ", line);
-//     sub.publish("chat", line);
-// });

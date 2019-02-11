@@ -22,8 +22,8 @@ diffHell.setPrivateKey(Alice_Trent_cypher_key);
  */
 
 process.on("message", (msg)=>{
-    console.log("Child: %s", JSON.stringify(msg));
-    console.log('Child: promises %s', JSON.stringify(promises));
+    console.log("Bob: %s", JSON.stringify(msg));
+    console.log('Bob: promises %s', JSON.stringify(promises));
     Promise.all(promises).then(()=>{
         if(msg.end === true){
             sub.quit();

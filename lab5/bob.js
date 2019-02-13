@@ -9,12 +9,12 @@ let promises = [];
 let counter = 0;
 
 //1. let Bob_Trent_cypher_key = 'Bob_Trent_cypher_key'; //Bob and Trent knows
-let CLIENT_INFO = {
-    Bob_Trent_cypher_key: 'Bob_Trent_cypher_key',
-    time_stamp: new Date().getSeconds(),
+let Info = {
+    BobTrentCypherKey: 'Bob_Trent_cypher_key',
+    TimeStamp: new Date().getSeconds(),
     Bob_id: 'Bob_id'
 };
-diffHell.setPrivateKey(Alice_Trent_cypher_key);
+diffHell.setPrivateKey(Info.BobTrentCypherKey);
 
 /**
  * 3. После этого Боб расшифровывает пакет данных общим с Трентом ключом и 

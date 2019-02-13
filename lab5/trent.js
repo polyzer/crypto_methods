@@ -2,12 +2,14 @@ const crypto = require('crypto');
 
 const redis = require("redis");
 const { fork } = require('child_process');
-const alice_child_process = fork('alice.js');
+const alice_child_process = fork('alice.1.js');
 const bob_child_process = fork('bob.js');
 
 // DATA
-let Alice_Trent_cypher_key = 'Alice_Trent_cypher_key'; //Alice and Trent knows
-let Bob_Trent_cypher_key = 'Bob_Trent_cypher_key'; //Alice and Trent knows
+let Info = {
+    AliceTrentCypherKey: 'Alice_Trent_cypher_key', //Alice and Trent knows
+    BobTrentCypherKey: 'Bob_Trent_cypher_key' //Alice and Trent knows    
+};
 
 /**
  * 2. 

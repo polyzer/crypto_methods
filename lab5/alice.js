@@ -1,5 +1,5 @@
 var crypto = require('crypto');
-
+const QuickEncrypt = require('quick-encrypt')
 let promises = [];
 
 /**  1. First Step
@@ -10,11 +10,11 @@ let promises = [];
   После этого Алиса передает своё имя (в открытом виде) и зашифрованные данные Тренту.
  */
 // Generating random session key;
-let prime_length = 60;
+let prime_length = 512;
 let diffHell = crypto.createDiffieHellman(prime_length);
-diffHell.generateKeys('base64');
+diffHell.generateKeys();
 /////////////////////////************ */
-let First_session_info = {
+let Info = {
     randomSessionKeyForBob: diffHell.getPrivateKey(),
     // Shared key for Trent
     AliceTrentCypherKey: 'Alice_Trent_cypher_key',
@@ -24,10 +24,14 @@ let First_session_info = {
 };
 /////////////////////////************ */
 // Buffer that we need to encrypt with  key;
-let first_session_data = First_session_info.timeStamp + 
-First_session_info.BobID + First_session_info.randomSessionKeyForBob;
+let first_session_data = Info.timeStamp + Info.BobID + Info.randomSessionKeyForBob;
 // Ecnrypting
-let encrypted_buffer = crypto.privateEncrypt(First_session_info.AliceTrentCypherKey, first_session_data);
+console.log("Bob's key: " + Info.randomSessionKeyForBob);
+console.log("first_session_data: " + first_session_data);
+
+//let encrypted_buffer = crypto.privateEncrypt(Info.AliceTrentCipherKey, Info.randomSessionKeyForBob);
+let encrypted_buffer = crypto.privateEncrypt(Info.randomSessionKeyForBob, new Buffer(first_session_data));
+console.log(encrypted_buffer);
 
 process.on("message", (msg)=>{
     console.log("Alice: %s", JSON.stringify(msg));

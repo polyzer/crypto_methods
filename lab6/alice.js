@@ -1,13 +1,30 @@
-const QuickEncrypt = require('quick-encrypt')
- 
+const QuickEncrypt = require('quick-encrypt');
+const fs = require('fs');
+
 // --- RSA Keypair Generation ---
 let keys = QuickEncrypt.generate(1024) // Use either 2048 bits or 1024 bits.
-console.log(keys) // Generated Public Key and Private Key pair
-let publicKey = keys.public      // " -----BEGIN RSA PUBLIC KEY-----\nMIGJAoGBAIXlXZs+0FoIGBc5pjnZZxtvIzdDFtNi3SVi6vf2J...... "
-let privateKey = keys.private   // " -----BEGIN RSA PUBLIC KEY-----\nMIGJAoGBAIXlXZs+0FoIGBc5pjnZZxtvIzdDFtNi3SVi6vf2J...... "
- 
+console.log(JSON.stringify(keys)); // Generated Public Key and Private Key pair
+
+let publicKey = keys.public;      // " -----BEGIN RSA PUBLIC KEY-----\nMIGJAoGBAIXlXZs+0FoIGBc5pjnZZxtvIzdDFtNi3SVi6vf2J...... "
+let privateKey = keys.private;   // " -----BEGIN RSA PUBLIC KEY-----\nMIGJAoGBAIXlXZs+0FoIGBc5pjnZZxtvIzdDFtNi3SVi6vf2J...... "
+
+fs.writeFile("./private_key.txt", privateKey, function(err) {
+    if(err) {
+        return console.log(err);
+    }
+
+    console.log("The file was saved!");
+});
+fs.writeFile("./public_key.txt", publicKey, function(err) {
+    if(err) {
+        return console.log(err);
+    }
+
+    console.log("The file was saved!");
+});
+console.log("Private Key: " + privateKey.toString());
 let Info = {
-    randomSessionKeyForBob: diffHell.getPrivateKey(),
+    randomSessionKeyForBob: privateKey.toString(),
     // Shared key for Trent
     AliceTrentCypherKey: 'Alice_Trent_cypher_key',
     // Getting timestamp
@@ -16,7 +33,7 @@ let Info = {
 };
 /////////////////////////************ */
 // Buffer that we need to encrypt with  key;
-let first_session_data = Info.timeStamp + Info.BobID + Info.randomSessionKeyForBob;
+let first_session_data = Info.timeStamp +'.'+ Info.BobID +'.'+ Info.randomSessionKeyForBob;
 
 // --- Encrypt using public key ---
 let encryptedText = QuickEncrypt.encrypt( first_session_data, publicKey )

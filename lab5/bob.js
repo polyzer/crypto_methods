@@ -1,4 +1,6 @@
+var assert = require('assert');
 var crypto = require('crypto');
+
 var prime_length = 60;
 var diffHell = crypto.createDiffieHellman(prime_length);
 diffHell.generateKeys('base64');
@@ -12,7 +14,8 @@ let counter = 0;
 let Info = {
     BobTrentCypherKey: 'Bob_Trent_cypher_key',
     TimeStamp: new Date().getSeconds(),
-    Bob_id: 'Bob_id'
+    Bob_id: 'Bob_id',
+    AliceBobCypherKey: 'ciw7p02f70000ysjon7gztjn7'
 };
 diffHell.setPrivateKey(Info.BobTrentCypherKey);
 

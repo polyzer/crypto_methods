@@ -31,11 +31,13 @@ function decryptWithKey(dec_key, dec_text){
     var text = '72721827b4b4ee493ac09c635827c15ce014c3c3';
     if(dec_text) text = dec_text;
 
-    console.log('Ciphering "%s" with key "%s" using %s', text, key, algorithm);
+    console.log('Deciphering "%s" with key "%s" using %s', text, key, algorithm);
 
     var decipher = crypto.createDecipher(algorithm, key);
-    var deciphered = decipher.update(ciphered, outputEncoding, inputEncoding);
+    var deciphered = decipher.update(text, outputEncoding, inputEncoding);
     deciphered += decipher.final(inputEncoding);
+    console.log('Result in %s is "%s"', inputEncoding, deciphered);
+
     return deciphered;
 }
 

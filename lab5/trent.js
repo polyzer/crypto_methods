@@ -4,12 +4,7 @@ const redis = require("redis");
 const { fork } = require('child_process');
 const alice_child_process = fork('alice.js');
 const bob_child_process = fork('bob.js');
-var path = require('path'); 
-path.exists('./bob_trent_public.txt', function(exists) { 
-  if (exists) { 
-    // do something 
-  } 
-}); 
+var path = require('path');
 // DATA
 let Info = {
     AliceTrentCypherKey: 'Alice_Trent_cypher_key', //Alice and Trent knows

@@ -16,6 +16,8 @@ let Info = {
 // Buffer that we need to encrypt with  key;
 let first_session_data = Info.TimeStamp +'.'+ Info.BobID +'.'+ Info.AliceBobCypherKey;
 let encrypted_data = enc_funcs.encryptWithKey(Info.AliceTrentCypherKey, first_session_data);
+console.log("alice encryption");
+
 process.send({"Data": encrypted_data, "Type": enc_funcs.MESSAGES.ALICE_TO_BOB});
 // let decrypted_data = enc_funcs.decryptWithKey(Info.AliceTrentCypherKey, encrypted_data);
 

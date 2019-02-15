@@ -26,7 +26,7 @@ let Info = {
  * конкатенацию из новой метки времени, идентификатора Алисы и сеансового ключа, 
  * после чего шифрует её общим с Бобом ключом и передаёт ему.
  */
-process.on("message", (msg)=>{
+alice_child_process.on("message", (msg)=>{
     if (msg.Type === enc_funcs.MESSAGES.ALICE_TO_BOB){
         if(msg.Data){
             let encrypted_data = msg.Data;
@@ -41,5 +41,5 @@ process.on("message", (msg)=>{
 
 });
 process.on('exit',()=>{
-    console.log("Alice: exited ;)");
+    console.log("Trent: exited ;)");
 });

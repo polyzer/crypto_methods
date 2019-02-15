@@ -14,9 +14,9 @@ let Info = {
 
 /////////////////////////************ */
 // Buffer that we need to encrypt with  key;
-let first_session_data = Info.TimeStamp + '.' + Info.BobID +'.'+ Info.randomSessionKeyForBob;
-let encrypted_data = enc_funcs.encryptWithKey(Info.AliceTrentCypherKey, first_session_data);
-let decrypted_data = enc_funcs.decryptWithKey(Info.AliceTrentCypherKey, encrypted_data);
+// let first_session_data = Info.TimeStamp + '.' + Info.BobID +'.'+ Info.randomSessionKeyForBob;
+// let encrypted_data = enc_funcs.encryptWithKey(Info.AliceTrentCypherKey, first_session_data);
+// let decrypted_data = enc_funcs.decryptWithKey(Info.AliceTrentCypherKey, encrypted_data);
 
 /**
  * 3. После этого Боб расшифровывает пакет данных общим с Трентом ключом и 

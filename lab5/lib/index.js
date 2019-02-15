@@ -1,6 +1,13 @@
 var assert = require('assert');
 var crypto = require('crypto');
 
+const MESSAGES = {
+    BOB_TO_ALICE: 0,
+    ALICE_TO_TRENT: 1,
+    TRENT_TO_BOB: 2,
+    ALICE_TO_BOB: 3
+};
+
 function encryptWithKey(enc_key, enc_text){
     var algorithm = 'aes256';
     var inputEncoding = 'utf8';
@@ -43,5 +50,6 @@ function decryptWithKey(dec_key, dec_text){
 
 module.exports = {
     encryptWithKey: encryptWithKey,
-    decryptWithKey: decryptWithKey
+    decryptWithKey: decryptWithKey,
+    MESSAGES: MESSAGES
 }

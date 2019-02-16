@@ -22,19 +22,23 @@ let Info = {
  * 3. После этого Боб расшифровывает пакет данных общим с Трентом ключом и 
  * может использовать сгенерированный Алисой случайный сеансовый ключ для передачи данных.
  */
-
-process.on("message", (msg)=>{
-    if (msg.Type === enc_funcs.MESSAGES.ALICE_TO_BOB){
-        if(msg.Data){
-            let encrypted_data = msg.Data;
-            let decrypted_data = enc_funcs.decryptWithKey(Info.AliceTrentCypherKey, encrypted_data);
-            Info.AliceBobCypherKey = decrypted_data.split(".").pop();
-            console.log("Bob recieved KEY FROM ALICE: %s", Info.AliceBobCypherKey);
-        }
-    }
-    console.log("Bob recieved: %s", JSON.stringify(msg));
-
-});
+async function wait_message(){
+    return new Promise((resolve) => {
+        process.on("message", (msg)=>{
+            if (msg.Type === enc_funcs.MESSAGES.ALICE_TO_BOB){
+                if(msg.Data){
+                    let encrypted_data = msg.Data;
+                    let decrypted_data = enc_funcs.decryptWithKey(Info.AliceTrentCypherKey, encrypted_data);
+                    Info.AliceBobCypherKey = decrypted_data.split(".").pop();
+                    console.log("Bob recieved KEY FROM ALICE: %s", Info.AliceBobCypherKey);
+                }
+            }
+            console.log("Bob recieved: %s", JSON.stringify(msg));
+            resolve
+        });
+        
+    });
+}
 process.on('exit',()=>{
     console.log("Bob: exited ;)");
 });

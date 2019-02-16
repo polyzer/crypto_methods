@@ -1,59 +1,35 @@
-const QuickEncrypt = require('quick-encrypt');
-const fs = require('fs');
+// https://github.com/nodejs/node-v0.x-archive/issues/6386#issuecomment-31817919
+const enc_funcs = require('./lib');
+const express = require('express');
+const app = express();
+let assert = require('assert');
 
-// --- RSA Keypair Generation ---
-let keys = QuickEncrypt.generate(1024) // Use either 2048 bits or 1024 bits.
-console.log(JSON.stringify(keys)); // Generated Public Key and Private Key pair
-
-let publicKey = keys.public;      // " -----BEGIN RSA PUBLIC KEY-----\nMIGJAoGBAIXlXZs+0FoIGBc5pjnZZxtvIzdDFtNi3SVi6vf2J...... "
-let privateKey = keys.private;   // " -----BEGIN RSA PUBLIC KEY-----\nMIGJAoGBAIXlXZs+0FoIGBc5pjnZZxtvIzdDFtNi3SVi6vf2J...... "
-
-fs.writeFile("./private_key.txt", privateKey, function(err) {
-    if(err) {
-        return console.log(err);
-    }
-
-    console.log("The file was saved!");
+app.get('/trent_to_alice_message', (req, res) => {
+    
 });
-fs.writeFile("./public_key.txt", publicKey, function(err) {
-    if(err) {
-        return console.log(err);
-    }
 
-    console.log("The file was saved!");
-});
-console.log("Private Key: " + privateKey.toString());
 let Info = {
-    randomSessionKeyForBob: privateKey.toString(),
+    AliceBobCypherKey: 'randomSessionKeyForBob',
     // Shared key for Trent
     AliceTrentCypherKey: 'Alice_Trent_cypher_key',
-    // Getting timestamp
-    timeStamp: new Date().getSeconds(),
-    BobID:'Bob_id'
+    // Getting TimeStamp
+    TimeStamp: new Date().getSeconds(),
+    BobID:'Bob_id',
+    TrentID: 'Trent_id',
+    AliceID: 'Alice_id'
 };
 /////////////////////////************ */
 // Buffer that we need to encrypt with  key;
-let first_session_data = Info.timeStamp +'.'+ Info.BobID +'.'+ Info.randomSessionKeyForBob;
+let first_session_data = Info.TimeStamp +'.'+ Info.BobID +'.'+ Info.AliceBobCypherKey;
+let encrypted_data = enc_funcs.encryptWithKey(Info.AliceTrentCypherKey, first_session_data);
+console.log("alice encryption");
 
-// --- Encrypt using public key ---
-let encryptedText = QuickEncrypt.encrypt( first_session_data, publicKey )
-console.log(encryptedText) // This will print out the ENCRYPTED text, for example : " 01c066e00c660aabadfc320621d9c3ac25ccf2e4c29e8bf4c...... "
- 
-// --- Decrypt using private key ---
-let decryptedText = QuickEncrypt.decrypt( encryptedText, privateKey)
-console.log(decryptedText) // This will print out the DECRYPTED text, which is " This is some super top secret text! "
-/////////////////////////************ */
+process.send({"Data": encrypted_data, "Type": enc_funcs.MESSAGES.ALICE_TO_BOB});
+// let decrypted_data = enc_funcs.decryptWithKey(Info.AliceTrentCypherKey, encrypted_data);
 
 process.on("message", (msg)=>{
     console.log("Alice: %s", JSON.stringify(msg));
-    console.log('Alice: promises %s', JSON.stringify(promises));
-    Promise.all(promises).then(()=>{
-        if(msg.end === true){
-            sub.quit();
-            console.log("after sub quit");
-            process.exit();
-        }    
-    });
+
 });
 process.on('exit',()=>{
     console.log("Alice: exited ;)");

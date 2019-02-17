@@ -40,6 +40,25 @@ alice_child_process.on("message", (msg)=>{
     console.log("Trent recieved: %s", JSON.stringify(msg));
 
 });
+
+bob_child_process.on("message", (msg)=>{
+    if (msg.Type === enc_funcs.MESSAGES.BOB_TO_ALICE){
+        if(msg.Data){
+            let encrypted_data = msg.Data;
+            let decrypted_data = enc_funcs.decryptWithKey(Info.AliceTrentCypherKey, encrypted_data);
+            let AliceToBobCypherkey = decrypted_data.split(".").pop();
+            let dataforencryption = new Date().getSeconds() + '.' + Info.BobID + '.' + AliceToBobCypherkey;
+            let encrypt_for_Bob = enc_funcs.encryptWithKey(Info.BobTrentCypherKey, dataforencryption);
+            bob_child_process.send({"Data": encrypt_for_Bob, "Type": enc_funcs.MESSAGES.ALICE_TO_BOB});
+        }
+    }
+    console.log("Trent recieved: %s", JSON.stringify(msg));
+
+});
+bob_child_process.on('close', function(code) {
+    console.log('Bob`s closing code: ' + code);
+});
+
 process.on('exit',()=>{
     console.log("Trent: exited ;)");
 });

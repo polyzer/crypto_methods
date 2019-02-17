@@ -12,6 +12,10 @@ let Info = {
     AliceBobCypherKey: 'randomSessionKeyForBob'
 };
 
+wait_message();
+setTimeout(() => {
+    console.log("after setTimeout");
+}, 4000);
 /////////////////////////************ */
 // Buffer that we need to encrypt with  key;
 // let first_session_data = Info.TimeStamp + '.' + Info.BobID +'.'+ Info.randomSessionKeyForBob;
@@ -23,20 +27,19 @@ let Info = {
  * может использовать сгенерированный Алисой случайный сеансовый ключ для передачи данных.
  */
 async function wait_message(){
-    return new Promise((resolve) => {
+    let func_ret = await new Promise((resolve) => {
         process.on("message", (msg)=>{
+            console.log("Bob recieved KEY FROM ALICE: %s", Info.AliceBobCypherKey);
             if (msg.Type === enc_funcs.MESSAGES.ALICE_TO_BOB){
                 if(msg.Data){
                     let encrypted_data = msg.Data;
-                    let decrypted_data = enc_funcs.decryptWithKey(Info.AliceTrentCypherKey, encrypted_data);
+                    let decrypted_data = enc_funcs.decryptWithKey(Info.BobTrentCypherKey, encrypted_data);
                     Info.AliceBobCypherKey = decrypted_data.split(".").pop();
-                    console.log("Bob recieved KEY FROM ALICE: %s", Info.AliceBobCypherKey);
                 }
             }
             console.log("Bob recieved: %s", JSON.stringify(msg));
-            resolve
+            resolve();
         });
-        
     });
 }
 process.on('exit',()=>{
